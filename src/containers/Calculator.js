@@ -1,8 +1,7 @@
-import React from 'react';
-
-import {InputWindow} from '../components/InputWindow';
-import {Button} from '../components/Button';
-import {ExpressionWindow} from '../components/ExpressionWindow';
+import React from "react";
+import {InputWindow} from "../components/InputWindow";
+import {Button} from "../components/Button";
+import {ExpressionWindow} from "../components/ExpressionWindow";
 
 export default class Calculator extends React.Component {
   constructor(props) {
@@ -19,6 +18,7 @@ export default class Calculator extends React.Component {
     this.handleNumberClick = this.handleNumberClick.bind(this);
     this.handleOperatorClick = this.handleOperatorClick.bind(this);
     this.handleEquals = this.handleEquals.bind(this);
+    this.handleDotClick = this.handleDotClick.bind(this);
   }
 
   handleNumberClick(num) {
@@ -52,6 +52,8 @@ export default class Calculator extends React.Component {
   }
 
   handleOperatorClick(operator) {
+    this.setState({dotUsed: false});
+
     if (this.state.equalsShown) {
       this.setState(prevState => ({
         expression: prevState.input,
@@ -87,7 +89,8 @@ export default class Calculator extends React.Component {
         this.setState(prevState => ({
           expression: prevState.expression + '=',
           input: eval(prevState.expression).toString(),
-          equalsShown: true
+          equalsShown: true,
+          dotUsed: false
         }));
         break;
 
@@ -95,22 +98,67 @@ export default class Calculator extends React.Component {
         this.setState(prevState => ({
           expression: prevState.expression + prevState.input + '=',
           input: eval(prevState.expression + prevState.input).toString(),
-          equalsShown: true
+          equalsShown: true,
+          dotUsed: false
+        }));
+    }
+  }
+
+  handleDotClick() {
+    if (this.state.dotUsed || this.state.equalsShown) return;
+
+    switch (this.state.input) {
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+        this.setState(prevState => ({
+          expression: prevState.expression + prevState.input,
+          input: '.',
+          dotUsed: true
+        }));
+        return;
+
+      default:
+        this.setState(prevState => ({
+          input: prevState.input + '.',
+          dotUsed: true
         }));
     }
   }
 
   render() {
     return (
-      <div>
-        <ExpressionWindow toDisplay={this.state.expression}/>
-        <InputWindow toDisplay={this.state.input}/>
-        <Button value="1" handleBtnClick={this.handleNumberClick}/>
-        <Button value="2" handleBtnClick={this.handleNumberClick}/>
-        <Button value="3" handleBtnClick={this.handleNumberClick}/>
-        <Button value="+" operator handleBtnClick={this.handleOperatorClick}/>
-        <Button value="-" operator handleBtnClick={this.handleOperatorClick}/>
-        <Button value="=" operator handleBtnClick={this.handleEquals}/>
+      <div className="calc__body">
+        <div className="calc__display">
+          <ExpressionWindow toDisplay={this.state.expression}/>
+          <InputWindow toDisplay={this.state.input}/>
+        </div>
+        <div className="calc__keyboard">
+          <Button value="AC" delete handleBtnClick={() => console.log('AC')}/>
+          <Button value="CE" delete handleBtnClick={() => console.log('CE')}/>
+          <Button value="Ret" delete handleBtnClick={() => console.log('Ret')}/>
+          <Button value="/" operator handleBtnClick={this.handleOperatorClick}/>
+
+          <Button value="7" handleBtnClick={this.handleNumberClick}/>
+          <Button value="8" handleBtnClick={this.handleNumberClick}/>
+          <Button value="9" handleBtnClick={this.handleNumberClick}/>
+          <Button value="*" operator handleBtnClick={this.handleOperatorClick}/>
+
+          <Button value="4" handleBtnClick={this.handleNumberClick}/>
+          <Button value="5" handleBtnClick={this.handleNumberClick}/>
+          <Button value="6" handleBtnClick={this.handleNumberClick}/>
+          <Button value="-" operator handleBtnClick={this.handleOperatorClick}/>
+
+          <Button value="1" handleBtnClick={this.handleNumberClick}/>
+          <Button value="2" handleBtnClick={this.handleNumberClick}/>
+          <Button value="3" handleBtnClick={this.handleNumberClick}/>
+          <Button value="+" operator handleBtnClick={this.handleOperatorClick}/>
+
+          <Button value="0" handleBtnClick={this.handleNumberClick}/>
+          <Button value="." handleBtnClick={this.handleDotClick}/>
+          <Button value="=" equals handleBtnClick={this.handleEquals}/>
+        </div>
       </div>
     );
   }
