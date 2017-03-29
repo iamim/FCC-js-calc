@@ -1,12 +1,18 @@
-import React from 'react';
+import React from "react";
+import classNames from "classnames";
 
 export const Button = (props) => {
   function handleBtnClick() {
     props.handleBtnClick(props.value);
   }
 
+  const classes = classNames({
+    'calc-button': true,
+    '-width-double': props.equals
+  });
+
   return (
-    <div onClick={handleBtnClick}>
+    <div className={classes} onClick={handleBtnClick}>
       {props.value}
     </div>
   );
@@ -14,5 +20,6 @@ export const Button = (props) => {
 
 Button.propTypes = {
   value: React.PropTypes.string.isRequired,
-  handleBtnClick: React.PropTypes.func.isRequired
+  handleBtnClick: React.PropTypes.func.isRequired,
+  equals: React.PropTypes.bool
 };

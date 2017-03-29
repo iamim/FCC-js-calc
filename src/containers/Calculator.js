@@ -4,6 +4,10 @@ import {Button} from "../components/Button";
 import {ExpressionWindow} from "../components/ExpressionWindow";
 
 export default class Calculator extends React.Component {
+  static strip(number) {
+    return number.toPrecision(12) / 1;
+  }
+
   constructor(props) {
     super(props);
 
@@ -36,10 +40,10 @@ export default class Calculator extends React.Component {
         this.setState({input: num});
         break;
 
-      case '+':
-      case '-':
-      case '*':
-      case '/':
+      case ' + ':
+      case ' - ':
+      case ' * ':
+      case ' / ':
         this.setState(prevState => ({
           expression: prevState.expression + prevState.input,
           input: num
@@ -47,7 +51,7 @@ export default class Calculator extends React.Component {
         break;
 
       default:
-        this.setState(prevState => ({input: prevState.input + num}));
+        this.setState(prevState => (prevState.input.length >= 12 ? {} : {input: prevState.input + num}));
     }
   }
 
@@ -63,17 +67,17 @@ export default class Calculator extends React.Component {
     }
 
     switch (this.state.input) {
-      case '+':
-      case '-':
-      case '*':
-      case '/':
-        this.setState({input: operator});
+      case ' + ':
+      case ' - ':
+      case ' * ':
+      case ' / ':
+        this.setState({input: ' '+operator+' '});
         break;
 
       default:
         this.setState(prevState => ({
           expression: prevState.expression + prevState.input,
-          input: operator
+          input: ' '+operator+' '
         }));
     }
   }
@@ -82,13 +86,13 @@ export default class Calculator extends React.Component {
     if (this.state.equalsShown) return;
 
     switch (this.state.input) {
-      case '+':
-      case '-':
-      case '*':
-      case '/':
+      case ' + ':
+      case ' - ':
+      case ' * ':
+      case ' / ':
         this.setState(prevState => ({
-          expression: prevState.expression + '=',
-          input: eval(prevState.expression).toString(),
+          expression: prevState.expression + ' =',
+          input: Calculator.strip(eval(prevState.expression)).toString(),
           equalsShown: true,
           dotUsed: false
         }));
@@ -96,8 +100,8 @@ export default class Calculator extends React.Component {
 
       default:
         this.setState(prevState => ({
-          expression: prevState.expression + prevState.input + '=',
-          input: eval(prevState.expression + prevState.input).toString(),
+          expression: prevState.expression + prevState.input + ' =',
+          input: Calculator.strip(eval(prevState.expression + prevState.input)).toString(),
           equalsShown: true,
           dotUsed: false
         }));
@@ -108,10 +112,10 @@ export default class Calculator extends React.Component {
     if (this.state.dotUsed || this.state.equalsShown) return;
 
     switch (this.state.input) {
-      case '+':
-      case '-':
-      case '*':
-      case '/':
+      case ' + ':
+      case ' - ':
+      case ' * ':
+      case ' / ':
         this.setState(prevState => ({
           expression: prevState.expression + prevState.input,
           input: '.',
@@ -129,7 +133,7 @@ export default class Calculator extends React.Component {
 
   render() {
     return (
-      <div className="calc__body">
+      <div className="calc">
         <div className="calc__display">
           <ExpressionWindow toDisplay={this.state.expression}/>
           <InputWindow toDisplay={this.state.input}/>
@@ -137,7 +141,7 @@ export default class Calculator extends React.Component {
         <div className="calc__keyboard">
           <Button value="AC" delete handleBtnClick={() => console.log('AC')}/>
           <Button value="CE" delete handleBtnClick={() => console.log('CE')}/>
-          <Button value="Ret" delete handleBtnClick={() => console.log('Ret')}/>
+          <Button value="←" delete handleBtnClick={() => console.log('Ret')}/>
           <Button value="/" operator handleBtnClick={this.handleOperatorClick}/>
 
           <Button value="7" handleBtnClick={this.handleNumberClick}/>

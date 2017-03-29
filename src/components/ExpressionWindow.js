@@ -1,8 +1,12 @@
-import React from 'react';
+import React from "react";
 
 export const ExpressionWindow = (props) => {
   return (
-    <h1>{props.toDisplay}</h1>
+    <div className="calc__expression">
+      <p className="calc__expression-text">
+        {props.toDisplay}
+      </p>
+    </div>
   );
 };
 
