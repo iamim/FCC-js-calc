@@ -4,8 +4,16 @@ import {Button} from "../components/Button";
 import {ExpressionWindow} from "../components/ExpressionWindow";
 
 export default class Calculator extends React.Component {
+
   static strip(number) {
-    return number.toPrecision(8) / 1;
+    const stripped = number.toPrecision(8) / 1;
+
+    if (stripped.toString().length >= 12) {
+      return stripped.toExponential(4);
+    }
+    else {
+      return stripped;
+    }
   }
 
   constructor(props) {
@@ -16,7 +24,6 @@ export default class Calculator extends React.Component {
       input: '',
       equalsShown: false,
       dotUsed: false,
-      lastIsOperator: false
     };
 
     this.handleNumberClick = this.handleNumberClick.bind(this);
@@ -24,6 +31,8 @@ export default class Calculator extends React.Component {
     this.handleEquals = this.handleEquals.bind(this);
     this.handleDotClick = this.handleDotClick.bind(this);
     this.handleReturnClick = this.handleReturnClick.bind(this);
+    this.handleAc = this.handleAc.bind(this);
+    this.handleCe = this.handleCe.bind(this);
   }
 
   handleNumberClick(num) {
@@ -56,6 +65,7 @@ export default class Calculator extends React.Component {
     }
   }
 
+  // TODO: impossible to enter an operator after clearing with <-
   handleOperatorClick(operator) {
     this.setState({dotUsed: false});
 
@@ -68,6 +78,9 @@ export default class Calculator extends React.Component {
     }
 
     switch (this.state.input) {
+      case '':
+        return;
+
       case ' + ':
       case ' - ':
       case ' * ':
@@ -87,6 +100,9 @@ export default class Calculator extends React.Component {
     if (this.state.equalsShown) return;
 
     switch (this.state.input) {
+      case '':
+        return;
+
       case ' + ':
       case ' - ':
       case ' * ':
@@ -154,12 +170,24 @@ export default class Calculator extends React.Component {
               return ({input: prevInput.slice(0, prevInput.length - 1)});
             }
           }
-          //   ({
-          //   input: prevState.input + '.',
-          //   dotUsed: true
-          // })
         );
     }
+  }
+
+  handleAc() {
+    this.setState({
+      expression: '',
+      input: '',
+      equalsShown: false,
+      dotUsed: false,
+    });
+  }
+
+  handleCe() {
+    this.setState({
+      input: '',
+      dotUsed: false
+    });
   }
 
   render() {
@@ -170,8 +198,8 @@ export default class Calculator extends React.Component {
           <InputWindow toDisplay={this.state.input}/>
         </div>
         <div className="calc__keyboard">
-          <Button value="AC" delete handleBtnClick={() => console.log('AC')}/>
-          <Button value="CE" delete handleBtnClick={() => console.log('CE')}/>
+          <Button value="AC" delete handleBtnClick={this.handleAc}/>
+          <Button value="CE" delete handleBtnClick={this.handleCe}/>
           <Button value="←" delete handleBtnClick={this.handleReturnClick}/>
           <Button value="/" operator handleBtnClick={this.handleOperatorClick}/>
 
