@@ -5,7 +5,7 @@ import {ExpressionWindow} from "../components/ExpressionWindow";
 
 export default class Calculator extends React.Component {
   static strip(number) {
-    return number.toPrecision(12) / 1;
+    return number.toPrecision(8) / 1;
   }
 
   constructor(props) {
@@ -23,6 +23,7 @@ export default class Calculator extends React.Component {
     this.handleOperatorClick = this.handleOperatorClick.bind(this);
     this.handleEquals = this.handleEquals.bind(this);
     this.handleDotClick = this.handleDotClick.bind(this);
+    this.handleReturnClick = this.handleReturnClick.bind(this);
   }
 
   handleNumberClick(num) {
@@ -71,13 +72,13 @@ export default class Calculator extends React.Component {
       case ' - ':
       case ' * ':
       case ' / ':
-        this.setState({input: ' '+operator+' '});
+        this.setState({input: ' ' + operator + ' '});
         break;
 
       default:
         this.setState(prevState => ({
           expression: prevState.expression + prevState.input,
-          input: ' '+operator+' '
+          input: ' ' + operator + ' '
         }));
     }
   }
@@ -131,6 +132,36 @@ export default class Calculator extends React.Component {
     }
   }
 
+  handleReturnClick() {
+    switch (this.state.input) {
+      case ' + ':
+      case ' - ':
+      case ' * ':
+      case ' / ':
+        this.setState({input: ''});
+        return;
+
+      default:
+        this.setState(prevState => {
+            const prevInput = prevState.input;
+            if (prevInput.endsWith('.')) {
+              return ({
+                input: prevInput.slice(0, prevInput.length - 1),
+                dotUsed: false
+              });
+            }
+            else {
+              return ({input: prevInput.slice(0, prevInput.length - 1)});
+            }
+          }
+          //   ({
+          //   input: prevState.input + '.',
+          //   dotUsed: true
+          // })
+        );
+    }
+  }
+
   render() {
     return (
       <div className="calc">
@@ -141,7 +172,7 @@ export default class Calculator extends React.Component {
         <div className="calc__keyboard">
           <Button value="AC" delete handleBtnClick={() => console.log('AC')}/>
           <Button value="CE" delete handleBtnClick={() => console.log('CE')}/>
-          <Button value="←" delete handleBtnClick={() => console.log('Ret')}/>
+          <Button value="←" delete handleBtnClick={this.handleReturnClick}/>
           <Button value="/" operator handleBtnClick={this.handleOperatorClick}/>
 
           <Button value="7" handleBtnClick={this.handleNumberClick}/>
