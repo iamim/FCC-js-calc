@@ -1,0 +1,8 @@
+$scale-factor: 2;
+
+$button-size: 50px * $scale-factor;
+$button-margin: 2px * $scale-factor;
+
+$calc-width: (($button-size + 2*$button-margin) * 4 + 2*$button-margin);
+$keyboard-height: (($button-size + 2*$button-margin) * 5 + 2*$button-margin);
+$display-height: (0.35 * $keyboard-height);

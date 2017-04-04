@@ -1,0 +1,9 @@
+@import '../common/variables';
+
+.calc-footer {
+  width: $calc-width;
+  margin: 20px auto;
+  font-family: Roboto, sans-serif;
+  font-size: 50% * $scale-factor;
+  text-align: center;
+}

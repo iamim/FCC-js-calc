@@ -1,31 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100');
-
-$scale-factor: 1.5;
-
-$button-size: 50px * $scale-factor;
-$button-margin: 2px * $scale-factor;
-
-$calc-width: (($button-size + 2*$button-margin) * 4 + 2*$button-margin);
-$keyboard-height: (($button-size + 2*$button-margin) * 5 + 2*$button-margin);
-$display-height: (0.35 * $keyboard-height);
+@import '../common/colors';
+@import '../common/variables';
 
 .calc {
   width: $calc-width;
   height: $keyboard-height + $display-height;
-  margin: auto;
+  margin: 20px auto;
   padding: 0;
   font-family: Roboto, sans-serif;
   font-size: 100% * $scale-factor;
-  //background-image: url('/Users/ilya/Git/FCC-js-calc/src/calc-backgrounds/mobile_wallpaper_by_maria_shanina.png');
+  border-radius: 3px;
+  box-shadow: 10px 10px 10px -2px rgba(0, 0, 0, 0.7);
+  background: #7f7f7f url('../calc-backgrounds/mobile_wallpaper_by_maria_shanina.png');
+  background-size: 100% 100%;
 }
 
 .calc__keyboard {
   width: 100%;
   height: $keyboard-height;
   padding: $button-margin;
-  //background-color: lightskyblue;
-  //background-image: url('/Users/ilya/Git/FCC-js-calc/src/calc-backgrounds/mobile_wallpaper_by_maria_shanina.png');
-
 }
 
 .calc-button {
@@ -35,12 +28,12 @@ $display-height: (0.35 * $keyboard-height);
   line-height: $button-size;
   margin: $button-margin;
   color: white;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
   text-align: center;
   font-size: 150%;
   user-select: none;
-  //opacity: 0.5;
-  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.3);
 
   -webkit-backdrop-filter: blur(5px);
 
@@ -53,7 +46,6 @@ $display-height: (0.35 * $keyboard-height);
   text-align: right;
   height: $display-height;
   padding: 0 (4 * $button-margin);
-  //background-color: lightskyblue;
   color: white;
 
   .calc__expression {

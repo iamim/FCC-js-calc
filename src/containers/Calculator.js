@@ -65,7 +65,6 @@ export default class Calculator extends React.Component {
     }
   }
 
-  // TODO: impossible to enter an operator after clearing with <-
   handleOperatorClick(operator) {
     this.setState({dotUsed: false});
 
@@ -154,7 +153,6 @@ export default class Calculator extends React.Component {
       case ' - ':
       case ' * ':
       case ' / ':
-        this.setState({input: ''});
         return;
 
       default:
